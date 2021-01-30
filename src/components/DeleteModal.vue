@@ -2,7 +2,8 @@
   <div class="modal-backdrop">
     <div class="modal">
       <div>
-        Are u sure you want to delete <br />{{ this.customerToDelete.name }}
+        Are u sure you want to delete <br />
+        {{ nameTitle }}
       </div>
       <button @click="onDelete" class="mt-3 border-b border-teal font-semibold">
         Delete
@@ -15,16 +16,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 export default {
   name: "DeleteModal",
-  // props: ["dataToDelete"],
-  computed: {
-    ...mapState("customer", {
-      customerToDelete: (state) => state.customerToDelete,
-    }),
-  },
+  props: ["nameTitle"],
   methods: {
     close() {
       this.$emit("close");

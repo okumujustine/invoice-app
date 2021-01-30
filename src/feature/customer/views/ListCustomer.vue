@@ -12,6 +12,7 @@
       @onDelete="onDeleteCustomer"
       v-show="this.isDeleteModalVisible"
       @close="closeDeleteModal"
+      :name-title="customerToDelete.name"
     />
     <EditCustomerModal
       v-show="this.isEditModalVisible"
