@@ -40,7 +40,10 @@ const actions = {
     customerService
       .getAllCustomers()
       .then((customers) => commit("GET_CUSTOMERS_SUCCESS", customers.reverse()))
-      .catch((error) => commit("GET_CUSTOMERS_FAILED", error));
+      .catch((error) => {
+        alert(error.message);
+        commit("GET_CUSTOMERS_FAILED", error.message);
+      });
   },
 
   deleteOneCustomer({ commit }, customerId) {
@@ -110,14 +113,18 @@ const mutations = {
   GET_REQUEST: (state) => {
     state.loading = true;
   },
+
   GET_CUSTOMERS_SUCCESS: (state, customers) => {
     state.customers = customers;
     state.loading = false;
+    state.error = null;
   },
+
   GET_CUSTOMERS_FAILED: (state, error) => {
     state.error = error;
     state.loading = false;
   },
+
   DELETE_CUSTOMER_SUCCESS: (state, customer) => {
     state.customers.splice(
       state.customers.map((customer) => customer.id).indexOf(customer.id),
@@ -125,10 +132,12 @@ const mutations = {
     );
     state.isDeleteModalVisible = false;
   },
+
   SET_CUSTOMER_TO_DELETE: (state, customer) => {
     state.customerToDelete.id = customer.id;
     state.customerToDelete.name = customer.name;
   },
+
   SET_CUSTOMER_TO_EDIT: (state, customer) => {
     state.customerToEdit.id = customer.id;
     state.customerToEdit.createdAt = customer.createdAt;
@@ -136,14 +145,17 @@ const mutations = {
     state.customerToEdit.address = customer.address;
     state.customerToEdit.name = customer.name;
   },
+
   CUSTOMER_ADD_REQUEST: (state) => {
     state.addCustomerLoading = true;
   },
+
   ADD_CUSTOMER_SUCCESS: (state, customer) => {
     state.customers.unshift(customer);
     state.isModalVisible = false;
     state.addCustomerLoading = false;
   },
+
   OPEN_MODAL: (state) => {
     state.isModalVisible = true;
   },

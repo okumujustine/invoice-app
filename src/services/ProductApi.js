@@ -11,16 +11,16 @@ export const productService = {
       return product.data;
     });
   },
-  addCustomer(customerData) {
-    return API.post(`/customer`, customerData).then((customer) => {
-      return customer.data;
+  addProduct(productData) {
+    return API.post(`/product`, productData).then((product) => {
+      return product.data;
     });
   },
 
-  editCustomer({ customerCustomerData, customerId }) {
-    return API.put(`/customer/${customerId}`, customerCustomerData).then(
-      (editedCustomer) => {
-        return editedCustomer.data;
+  editProduct({ editedProductData, productId }) {
+    return API.put(`/product/${productId}`, editedProductData).then(
+      (editedProduct) => {
+        return editedProduct.data;
       }
     );
   },

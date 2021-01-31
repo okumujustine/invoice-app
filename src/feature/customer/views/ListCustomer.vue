@@ -1,8 +1,6 @@
 <template>
   <div>
-    <button class="addUser__Button" @click="openModal">
-      Add User
-    </button>
+    <button class="addUser__Button" @click="openModal">Add User</button>
     <AddCustomerModal
       v-show="this.isModalVisible"
       @close="closeModal"
@@ -106,21 +104,25 @@ export default {
       this.setCustomerToDelete(customer);
       this.onOpenDeleteModal();
     },
+
     closeDeleteModal() {
       this.onCloseDeleteModal();
     },
+
     openEditModal(customer) {
       this.setCustomerToEdit(customer);
       this.onOpenEditModal();
     },
+
     closeEditModal() {
       this.onCloseEditModal();
     },
+
     submitCustomer(customer, avatarLink) {
       const customerData = {
         address: customer.address,
         avatar: avatarLink,
-        name: _.capitalize(customer.name),
+        name: _.upperFirst(customer.name),
         createdAt: new Date(Date.now()).toISOString(),
         id: parseInt(this.customers[0].id, 10) + 1,
       };
@@ -130,8 +132,8 @@ export default {
       const customerCustomerData = {
         address: editedCustomer.address,
         avatar: avatarLink,
-        name: _.capitalize(editedCustomer.name),
-        createdAt: new Date(Date.now()).toISOString(),
+        name: _.upperFirst(editedCustomer.name),
+        createdAt: editedCustomer.createdAt,
       };
 
       this.onEditCustomer({

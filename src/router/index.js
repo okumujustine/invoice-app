@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../feature/authentication/Login.vue";
 import DashboardNavigator from "../feature/dashboard/DashboardNavigator.vue";
 import CustomerNavigator from "../feature/customer/CustomerNavigator.vue";
 import ProductNavigator from "../feature/product/ProductNavigator.vue";
@@ -15,11 +14,6 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "login",
-    component: Login,
-  },
-  {
-    path: "/dashboard",
     name: "dashboard",
     component: DashboardNavigator,
     children: [
