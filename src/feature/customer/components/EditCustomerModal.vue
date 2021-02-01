@@ -25,11 +25,11 @@ export default {
   name: "EditCustomerModal",
   computed: {
     ...mapState("customer", {
-      customerToEdit: (state) => state.customerToEdit,
+      customer: (state) => state.customer,
     }),
     customerName: {
       get() {
-        return this.$store.state.customer.customerToEdit.name;
+        return this.$store.state.customer.customer.name;
       },
       set(value) {
         this.updateCustomerName(value);
@@ -37,7 +37,7 @@ export default {
     },
     customerAddress: {
       get() {
-        return this.$store.state.customer.customerToEdit.address;
+        return this.$store.state.customer.customer.address;
       },
       set(value) {
         this.updateCustomerAddress(value);
@@ -58,7 +58,7 @@ export default {
       const avatarLink =
         "https://s3.amazonaws.com/uifaces/faces/twitter/craighenneberry/128.jpg";
 
-      this.$emit("submit", this.customerToEdit, avatarLink);
+      this.$emit("submit", this.customer, avatarLink);
     },
   },
 };

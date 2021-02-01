@@ -41,6 +41,14 @@
           <div class="customerListing__Right_ButtonContainer">
             <button @click="openDeleteModal(customer)">DELETE</button>
           </div>
+          <div class="customerListing__Right_ButtonContainer">
+            <router-link
+              :to="`/customer/${customer.id}/invoice/`"
+              class="btn btn-sm show"
+            >
+              <button>INVOICE</button>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>

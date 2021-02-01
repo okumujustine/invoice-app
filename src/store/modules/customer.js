@@ -1,14 +1,16 @@
 import { customerService } from "../../services/CustomerApi";
+import _ from "lodash";
 
 const state = {
-  isModalVisible: false,
-  isDeleteModalVisible: false,
-  isEditModalVisible: false,
+  customers: [],
+  customerInvoices: [],
+  customerInvoice: [],
+  invoiceItems: [],
   customerToDelete: {
     id: null,
     name: null,
   },
-  customerToEdit: {
+  customer: {
     createdAt: null,
     id: null,
     address: null,
@@ -18,8 +20,14 @@ const state = {
   loading: false,
   addCustomerLoading: false,
   updateUserLoading: false,
-  customers: [],
+  customerInvoicesLoading: false,
+  customerInvoiceLoading: false,
+  invoiceItemsLoading: false,
+  addInvoiceItemsLoading: false,
   error: null,
+  isModalVisible: false,
+  isDeleteModalVisible: false,
+  isEditModalVisible: false,
 };
 
 const getters = {
@@ -30,7 +38,7 @@ const getters = {
     return state.customerToDelete;
   },
   getCustomerToEdit: (state) => {
-    return state.customerToEdit;
+    return state.customer;
   },
 };
 
@@ -59,10 +67,10 @@ const actions = {
       .then((customer) => commit("ADD_CUSTOMER_SUCCESS", customer));
   },
 
-  editCustomer({ commit }, customerToEdit) {
+  editCustomer({ commit }, customer) {
     commit("CUSTOMER_UPDATE_REQUEST");
     customerService
-      .editCustomer(customerToEdit)
+      .editCustomer(customer)
       .then((editedCustomer) =>
         commit("CUSTOMER_EDIT_SUCCESS", editedCustomer)
       );
@@ -107,6 +115,59 @@ const actions = {
   closeEditModal({ commit }) {
     commit("CLOSE_EDIT_MODAL");
   },
+
+  getOneCustomer({ commit }, customerId) {
+    customerService
+      .getOneCustomer(customerId)
+      .then((customer) => commit("GET_ONE_CUSTOMER_SUCCESS", customer));
+  },
+  getCustomerInvoices({ commit }, customerId) {
+    commit("GET_CUSTOMER_INVOICES_REQUEST");
+    customerService
+      .getCustomerInvoices(customerId)
+      .then((customerInvoices) =>
+        commit("GET_CUSTOMER_INVOICES_SUCCESS", customerInvoices)
+      );
+  },
+
+  getCustomerInvoice({ commit }, userInvoiceData) {
+    commit("GET_CUSTOMER_INVOICE_REQUEST");
+    customerService
+      .getCustomerInvoices(userInvoiceData)
+      .then((customerInvoice) =>
+        commit("GET_CUSTOMER_INVOICE_SUCCESS", customerInvoice)
+      );
+  },
+
+  getInvoiceItems({ commit }, userInvoiceData) {
+    commit("GET_INVOICE_ITEMS_REQUEST");
+    customerService
+      .getCustomerInvoice(userInvoiceData)
+      .then((invoicesItems) =>
+        commit("GET_INVOICE_ITEMS_SUCCESS", invoicesItems)
+      );
+  },
+
+  async submitItem({ commit }, { item, customerInvoice }) {
+    commit("ADD_INVOICE_ITEM_REQUEST");
+    const invoiceId = customerInvoice[0].id;
+    const customerId = customerInvoice[0].customerId;
+
+    const itemToSubmit = {
+      id: Date.now(),
+      invoiceId: invoiceId,
+      createdAt: new Date(Date.now()).toISOString(),
+      item_name: _.upperFirst(item.name),
+      item_price: item.price,
+      quantity: item.quantity,
+    };
+
+    customerService
+      .addInvoiceItem(customerId, invoiceId, itemToSubmit)
+      .then((invoicesItem) => {
+        commit("ADD_INVOICE_ITEM_SUCCESS", invoicesItem);
+      });
+  },
 };
 
 const mutations = {
@@ -139,11 +200,11 @@ const mutations = {
   },
 
   SET_CUSTOMER_TO_EDIT: (state, customer) => {
-    state.customerToEdit.id = customer.id;
-    state.customerToEdit.createdAt = customer.createdAt;
+    state.customer.id = customer.id;
+    state.customer.createdAt = customer.createdAt;
 
-    state.customerToEdit.address = customer.address;
-    state.customerToEdit.name = customer.name;
+    state.customer.address = customer.address;
+    state.customer.name = customer.name;
   },
 
   CUSTOMER_ADD_REQUEST: (state) => {
@@ -180,11 +241,11 @@ const mutations = {
   },
 
   UPDATE_CUSTOMER_NAME: (state, value) => {
-    state.customerToEdit.name = value;
+    state.customer.name = value;
   },
 
   UPDATE_CUSTOMER_ADDRESS: (state, value) => {
-    state.customerToEdit.address = value;
+    state.customer.address = value;
   },
 
   CUSTOMER_UPDATE_REQUEST: (state) => {
@@ -199,6 +260,46 @@ const mutations = {
       ),
     ];
     state.isEditModalVisible = false;
+  },
+
+  GET_CUSTOMER_INVOICES_REQUEST: (state) => {
+    state.customer = [];
+    state.customerInvoicesLoading = true;
+  },
+
+  GET_CUSTOMER_INVOICES_SUCCESS: (state, customerInvoices) => {
+    state.customerInvoices = customerInvoices;
+    state.customerInvoicesLoading = false;
+  },
+
+  GET_CUSTOMER_INVOICE_REQUEST: (state) => {
+    state.customerInvoiceLoading = true;
+  },
+
+  GET_CUSTOMER_INVOICE_SUCCESS: (state, customerInvoice) => {
+    state.customerInvoice = customerInvoice;
+    state.customerInvoiceLoading = false;
+  },
+
+  GET_ONE_CUSTOMER_SUCCESS: (state, customer) => {
+    state.customer = customer;
+  },
+
+  GET_INVOICE_ITEMS_REQUEST: (state) => {
+    state.invoiceItemsLoading = true;
+  },
+
+  GET_INVOICE_ITEMS_SUCCESS: (state, invoicesItems) => {
+    state.invoiceItemsLoading = false;
+    state.invoiceItems = invoicesItems;
+  },
+
+  ADD_INVOICE_ITEM_REQUEST: (state) => {
+    state.addInvoiceItemsLoading = true;
+  },
+
+  ADD_INVOICE_ITEM_SUCCESS: (state, submitedItem) => {
+    state.invoiceItems.unshift(submitedItem);
   },
 };
 
