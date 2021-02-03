@@ -1,19 +1,21 @@
 <template>
   <div class="modal-backdrop">
     <div class="modal">
-      <div>Edit user details</div>
-      <input v-model="customerName" type="text" placeholder="name" />
-      <br />
-      <input v-model="customerAddress" type="text" placeholder="address" />
-      <br />
-      <input type="file" @change="onFileChanged" />
-      <br />
-      <button @click="submit" class="mt-3 border-b border-teal font-semibold">
-        Edit User
-      </button>
-      <button @click="close" class="mt-3 border-b border-teal font-semibold">
-        Close
-      </button>
+      <div>
+        <div>Edit user details</div>
+        <input v-model="customerName" type="text" placeholder="name" />
+        <br />
+        <input v-model="customerAddress" type="text" placeholder="address" />
+        <br />
+        <input type="file" @change="onFileChanged" />
+        <br />
+        <button @click="submit" class="mt-3 border-b border-teal font-semibold">
+          Edit User
+        </button>
+        <button @click="close" class="mt-3 border-b border-teal font-semibold">
+          Close
+        </button>
+      </div>
     </div>
   </div>
 </template>

@@ -17,6 +17,7 @@ const routes = [
   {
     path: "/",
     name: "dashboard",
+    redirect: "/customer",
     component: DashboardNavigator,
     children: [
       {

@@ -299,7 +299,7 @@ const mutations = {
   },
 
   ADD_INVOICE_ITEM_SUCCESS: (state, submitedItem) => {
-    state.invoiceItems.unshift(submitedItem);
+    state.invoiceItems.push(submitedItem);
   },
 };
 
