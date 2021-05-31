@@ -1,6 +1,17 @@
 # invoiceapp
+Invoice application UI consuming data from [mockApi](mockapi.io).
+<br/>
+Link to online hosted version [Invoice App](https://flt-invoice.netlify.app).
 
 ## Project setup
+```
+git clone https://github.com/okumujustine/invoice-app.git
+```
+
+```
+cd invoice-app
+```
+
 ```
 npm install
 ```
@@ -19,6 +30,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
